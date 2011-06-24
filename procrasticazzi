@@ -22,7 +22,7 @@ if [ $(whoami) != 'root' ]; then
 fi
 
 sed -i "/$SECTION_BEGIN/,/$SECTION_END/ d" "$HOSTS"
-pkill -f "${NAME}.py"
+pkill -f "${NAME}\.py"
 
 echo -n 'Working mode '
 
