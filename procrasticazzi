@@ -21,15 +21,17 @@ if [ $(whoami) != 'root' ]; then
 fi
 
 sed -i "/$SECTION_BEGIN/,/$SECTION_END/ d" $HOSTS
+pkill -f ${NAME}.py
 
 echo -n 'Working mode '
 
 if [ $1 = 'work' ]; then
     (
         echo "$SECTION_BEGIN"
-        sed -n '/\./ {s/\(.*\)/127.0.0.1 www.\1 \1/g; p}' $(dirname $0)/${NAME}.blacklist
+        sed -n '/\./ {s/\(.*\)/127.0.0.1 www.\1 \1/; p}' $(dirname $0)/${NAME}.blacklist
         echo "$SECTION_END"
     ) >>$HOSTS
+    nohup sh -c "while true; do python ${NAME}.py; sleep 20; done" >/dev/null 2>&1 &
     echo 'ON :)'
 else
     echo 'OFF :('
